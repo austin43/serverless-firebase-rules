@@ -1,0 +1,19 @@
+{
+  "name": "serverless-firebase-rules",
+  "version": "1.0.0",
+  "description": "A serverless plugin for deploying new firebase rules alongside your service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/austin43/serverless-firebase-rules.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/austin43/serverless-firebase-rules/issues"
+  },
+  "homepage": "https://github.com/austin43/serverless-firebase-rules#readme"
+}
