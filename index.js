@@ -1,9 +1,9 @@
+const { fork } = require('child_process')
+
 class ServerlessPlugin {
   constructor(serverless, options) {
     this.serverless = serverless
     this.options = options
-
-    console.log(this.serverless)
 
     this.commands = {
       welcome: {
@@ -24,25 +24,20 @@ class ServerlessPlugin {
     }
 
     this.hooks = {
-      'before:deploy': this.beforeDeploy.bind(this)
+      'deploy:compileEvents': this.run.bind(this)
     }
   }
 
-  beforeDeploy() {
-    this.serverless.cli.log('Hello from Serverless!')
-  }
+  run() {
+    const params = this.serverless.service.custom.firebase
+    this.serverless.cli.log(`Deploying firebase rules to ${params.project}`)
+    const worker = fork(`${__dirname}/worker.js`)
+    worker.send(params)
 
-  // welcomeUser() {
-  //   this.serverless.cli.log('Your message:')
-  // }
-  //
-  // displayHelloMessage() {
-  //   this.serverless.cli.log(`${this.options.message}`)
-  // }
-  //
-  // afterHelloWorld() {
-  //   this.serverless.cli.log('Please come again!')
-  // }
+    worker.on('message', (msg) => {
+      this.serverless.cli.log(`Successfully deployed firebase rules to ${params.project}`)
+    })
+  }
 }
 
 module.exports = ServerlessPlugin
